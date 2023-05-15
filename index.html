@@ -3,8 +3,8 @@
 <head>
     <style>
 body {
-  background-color: white;
-  color: rgb(3, 3, 156);
+  background-color: rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   font-family: Arial, sans-serif;
   display: flex;
   align-items: center;
@@ -13,29 +13,63 @@ body {
 }
 
 .container {
-  background-color: white;
+  background-color:rgb(255, 255, 255);
   padding: 20px;
   border: 0px solid rgba(128, 128, 128, 0.5);
   border-radius: 10px;
-  box-shadow: 2px 2px 2px 5px rgba(128, 128, 128, 0.171);
+  box-shadow: 2px 2px 2px 3px rgba(66, 65, 65, 0.226);
 }
 
-.row {
-  margin-bottom: 10px;
-}
+.row1 {
+    margin-bottom: 10px;
+    width: 48%;
+    float: left;
+    padding-right: 2%;
+  }
 
-.row label {
-  display: block;
-  margin-bottom: 5px;
+  .row1 label {
+    display: block;
+    padding-bottom: 2%;
+    text: bold;
+  }
+
+  .row2 {
+    margin-bottom: 10px;
+    width: 48%;
+    float: left;
+    padding-left: 2%;
+  }
+
+  .row2 label {
+    display: block;
+    padding-bottom: 2%;
+    text: bold;
+  }
+
+h1 {
+  color: black;
 }
 
 h2, label {
+  color:rgb(0, 0, 0);
   text-align: center;
 }
 
+h3, h4 {
+  color: black;
+  text-align: left;
+}
+
+.anmerkung{
+  padding-top: 10%;
+  border: 1px;
+  border-radius: 10px;
+  border-color: black;
+}
 h5 {
-    text-align: center;
-    color: rgba(39, 39, 39, 0.788)
+    text-align: left;
+    color: rgba(10, 10, 10, 0.788)
+
 }
 
 input[type="date"],
@@ -65,6 +99,26 @@ input[type="submit"]:hover {
   <title>Vorbesprechung Praxis Dr. Matthießen</title>
 
   <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById('myForm');
+      const date = document.getElementById('date');
+      const time = document.getElementById('time');
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const dateValue = date.value; 
+        const timeValue = time.value; 
+
+        localStorage.setItem('date', dateValue);
+        localStorage.setItem('time', timeValue);
+
+        // Redirect to the next page or perform additional actions
+        window.location.href = "user-interface.html";
+      });
+
+      updateTimeOptions(); // Call the function to populate time options initially
+    });
+
     function updateTimeOptions() {
       var selectedDate = new Date(document.getElementById("date").value);
       var selectedDay = selectedDate.getDay();
@@ -132,32 +186,39 @@ input[type="submit"]:hover {
     function padZero(num) {
       return num.toString().padStart(2, "0");
     }
-  </script>
+</script>
 </head>
 <body>
-  <h1></h1>
 
-  <form action="user-interface.html" method="GET">
+  <form id="myForm" action="user-interface.html" method="GET">
     <div class="container">
-      <h2>Bitte wählen Sie Ihren Termin aus.</h2>
-      <h5>Um ihre Daten Anonym zu halten, wählen sie bitte nur ihren Termin aus und geben keine Daten preis die zur Identifikation ihrer Person führen könnten.<br>Der Doktor kann ihnen ihren Fragebogen anschließend anhand ihres Termines zuordnen.<br>Vielen Dank!</h5>
-      <div class="row">
+      <h1>Herzlich Willkommen <br> in der Praxis Dr. Matthießen</h1>
+      <h3>Bitte nehmen sie sich ein paar Minuten Zeit den Fragebogen auszufüllen. <br>So können wir uns bestmöglich auf ihren Besuch vorbereiten <br> & Wartezeiten verkürzen.</h3>
+      <h2>Bitte wählen Sie Ihren Termin:</h2>
+      <div class="row1">
         <label for="date">Bitte wählen Sie das Datum Ihres Termins:</label>
         <input type="date" id="date" name="date" required onchange="updateTimeOptions()">
       </div>
-      <div class="row">
+      <div class="row2">
         <label for="time">Um wie viel Uhr haben Sie Ihren Termin?</label>
         <select id="time" name="time" required>
           <option value="">Wählen Sie eine Uhrzeit aus</option>
         </select>
       </div>
+      <div class="anmerkung">
+        <h5>Um ihre Daten Anonym zu halten, wählen sie bitte nur ihren Termin aus und <br>geben keine Daten preis die zur Identifikation ihrer Person führen könnten.<br>Der Doktor kann ihnen ihren Fragebogen anschließend anhand ihres Termines zuordnen.<br>Vielen Dank!</h5>
+      </div>
       <div class="row">
         <input type="submit" value="Weiter">
       </div>
     </div>
+
   </form>
   
 </body>
 </html>
+
+
+
 
 
