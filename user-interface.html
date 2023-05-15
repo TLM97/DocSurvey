@@ -30,6 +30,13 @@
       padding-top: 20px;
       padding-bottom: 20px;
     }
+
+    .termin {
+      float: center;
+      padding-left: 100px ;
+      
+    }
+
     h2  {
       text-align: left;
       color: rgb(71, 71, 71);
@@ -98,12 +105,32 @@
     }
   </style>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const dateValue = localStorage.getItem('date');
+    const timeValue = localStorage.getItem('time');
+
+    document.getElementById('dateValue').textContent = dateValue;
+    document.getElementById('timeValue').textContent = timeValue;
+  });
+</script>
+
 
 <form action="https://formsubmit.co/ernione203og@hotmail.com" method="POST">
 
     <div class="body">
     <div class="box">
     <h2>Anamnese Bogen</h2>
+    <div id="termin">
+
+      <h3>Ihr Termin</h3>
+      <div class="termin"><span id="dateValue"></span></div>
+      <div class="termin"><span id="timeValue"></span></div>
+    </div>
+    <h3>Hausarzt</h3>
+    <label for="hausarzt"></label>
+    <input type="text" id="allergies" name="allergies" placeholder="Wer ist derzeit ihr Hausarzt?">
+
     <h3>Allergien</h3>
     <label for="allergies"></label>
     <input type="text" id="allergies" name="allergies" placeholder="Liegen ihnen Allergien vor?">
@@ -134,31 +161,61 @@
     </select>
     
     <h3>Haben Sie Probleme beim Einschlafen oder Durchschlafen?</h3>
-    <input type="radio" name="sleep-problems" value="Probleme beim Einschlafen"> Probleme beim Einschlafen<br>
-    <input type="radio" name="sleep-problems" value="Probleme beim Durchschlafen"> Probleme beim Durchschlafen<br>
-    <input type="radio" name="sleep-problems" value="keine Ein- oder Durchschlafprobleme"> Keine Ein- oder Durchschlafprobleme<br>
+    <label>
+    <input type="radio"  name="sleep-problems" value="Probleme beim Einschlafen"> Probleme beim Einschlafen<br>
+    </label>
+    <label >
+    <input type="radio"  name="sleep-problems" value="Probleme beim Durchschlafen"> Probleme beim Durchschlafen<br>
+    </label>
+    <label>
+    <input type="radio"  name="sleep-problems" value="keine Ein- oder Durchschlafprobleme"> Keine Ein- oder Durchschlafprobleme<br>
+    </label>
 
     <h3>Ist Ihr Schlaf erholsam?</h3>
+    <label>
     <input type="radio" name="restful-sleep" value="ja"> Ja<br>
+    </label>
+    <label>
     <input type="radio" name="restful-sleep" value="nein"> Nein<br>
+    </label>
     
     <h3>Sind Sie tagsüber müde?</h3>
+    <label>
     <input type="radio" name="daytime-fatigue" value="ja"> Ja<br>
+    </label>
+    <label>
     <input type="radio" name="daytime-fatigue" value="nein"> Nein<br>
+    </label>
+    <label>
     <input type="radio" name="daytime-fatigue" value="auch schon morgens"> Auch schon morgens<br>
+    </label>
+    <label>
     <input type="radio" name="daytime-fatigue" value="ich schlafe gelegentlich sogar ungewollt ein"> Ich schlafe gelegentlich sogar ungewollt ein<br>
+    </label>
     
     <h3>Schnarchen Sie nachts?</h3>
+    <label>
     <input type="radio" name="snoring" value="ja"> Ja<br>
+    </label>
+    <label>
     <input type="radio" name="snoring" value="nein"> Nein<br>
+    </label>
     
     <h3>Wurden bei Ihnen Atemaussetzer beobachtet?</h3>
+    <label>
     <input type="radio" name="breathing-interruptions" value="ja"> Ja<br>
+    </label>
+    <label>
     <input type="radio" name="breathing-interruptions" value="nein"> Nein<br>
+    </label>
     
     <h3>Waren Sie schon einmal in einem Schlaflabor?</h3>
+    <label>
     <input type="radio" name="sleep-lab-visit" value="ja"> Ja<br>
+    </label>
+    <label>
     <input type="radio" name="sleep-lab-visit" value="nein"> Nein<br>
+    </label>
     <p>Wenn ja, geben Sie bitte an, wann und wo:</p>
     <input type="text" name="sleep-lab-details">
     
@@ -166,9 +223,14 @@
     <textarea name="medical-conditions" rows="4" cols="50"></textarea>
 
     <h2>Fragebogen zur Tagschläfrigkeit</h2>
+    <h3>(Epworth Sleepiness Scale)</h3>
 
     <title>Situationen und Wahrscheinlichkeit einzunicken</title>
-    <style>
+    <td>Die Folgende Frage bezieht sich auf Ihr normales Alltagsleben in letzter Zeit: </td>
+    <h3>Für wie wahrscheinlich halten Sie es, <br> dass Sie in einer der folgenden Situationen einnicken oder einschlafen würden, <br> sich also nicht nur müde fühlen?</h3>
+    <td>Auch wenn sie in letzter Zeit einige dieser Situationen nicht erlebt haben, <br>versuchen Sie sich trotzdem vorzustellen, wie sich diese Situationen auf sie ausgewirkt hätten. <br><br>Benutzen sie die Folgende Skala, um für jede Situation eine möglichst genaue Einschätzung vorzunehmen <br>und wählen sie die entsprechende Zahl aus.</td>
+    <h3>0 = würde niemals einnicken <br>1 = geringe Wahrscheinlichkeit einzunicken <br>2 = mittlere Wahrscheinlichkeit einzunicken <br>3 = hohe Wahrscheinlichkeit einzunicken</h3>
+   <style>
       input[type="range"] {
         width: 300px;
       }
@@ -182,54 +244,111 @@
         <th>Wahrscheinlichkeit einzunicken</th>
       </tr>
       <tr>
-        <td>Im Sitzen Lesend </td>
+        <td>Im Sitzen Lesend</td>
         <td>
-          <input type="range" name="situation1" min="0" max="100" step="1">
+          <select name="situation1" onchange="updateValue('situation1', this.value)">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
         </td>
       </tr>
       <tr>
         <td>Beim Fernsehen</td>
         <td>
-          <input type="range" name="situation2" min="0" max="100" step="1">
+          <select name="situation2" onchange="updateValue('situation1', this.value)">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+          </select>
         </td>
       </tr>
-      <tr>
-        <td>Wenn Sie passiv (als Zuhörer) in der Öffentlichkeit sitzen (z.B. im Theater ooder bei einem Vortrag)</td>
-        <td>
-          <input type="range" name="situation3" min="0" max="100" step="1">
-        </td>
-      </tr>
-      <tr>
         <td>Als Beifahrer im Auto während einer einstündigen Fahrt ohne Pause</td>
         <td>
-          <input type="range" name="situation2" min="0" max="100" step="1">
+          <select name="situation3" onchange="updateValue('situation3', this.value)">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
         </td>
       </tr>
       <tr>
         <td>Wenn sie sich am Nachmittag hingelegt haben, um auszuruhen</td>
         <td>
-          <input type="range" name="situation2" min="0" max="100" step="1">
+          <select name="situation4" onchange="updateValue('situation4', this.value)">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
         </td>
       </tr> 
       <tr>
         <td>Wenn Sie sitzen und sich mit jemand unterhalten</td>
         <td>
-          <input type="range" name="situation2" min="0" max="100" step="1">
+          <select name="situation5" onchange="updateValue('situation5', this.value)">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
         </td>
       </tr>
       <tr>
         <td>Wenn Sie nach dem Mittagessen (ohne Alkohol) ruhig dasitzen</td>
         <td>
-          <input type="range" name="situation2" min="0" max="100" step="1">
+          <select name="situation6" onchange="updateValue('situation6', this.value)">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
         </td>
       </tr>
       <tr>
-        <td>Wenn sie als Fahrer eines Autos Verkehrsbedingt einige Minuten halten müssen</td>
+        <td>Wenn sie als Fahrer eines Autos verkehrsbedingt einige Minuten halten müssen</td>
         <td>
-          <input type="range" name="situation2" min="0" max="100" step="1">
+          <select name="situation7" onchange="updateValue('situation7', this.value)">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" align="right">
+          <strong>Total:</strong> <span id="total">0</span>
         </td>
       </tr>
     </table>
+    
+    <script>
+      // Object to store the selected values for each situation
+      const selectedValues = {};
+    
+      // Update the selected value for a situation and recalculate the total
+      function updateValue(situation, value) {
+        selectedValues[situation] = parseInt(value);
+        calculateTotal();
+      }
+    
+      // Calculate the sum of all selected values and update the total
+      function calculateTotal() {
+        let total = 0;
+        for (const situation in selectedValues) {
+          total += selectedValues[situation];
+        }
+        document.getElementById('total').textContent = total;
+      }
+    </script>
+    
+    
+    
     
       <input type="submit" value="Submit">
 
